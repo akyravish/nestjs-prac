@@ -8,31 +8,34 @@ import { Suspense } from 'react';
 import { fetchInvoicesPages } from '@/app/lib/data';
 
 export default async function Page(props: {
-  searchParams?: Promise<{
-    query?: string;
-    page?: string;
-  }>;
+	searchParams?: Promise<{
+		query?: string;
+		page?: string;
+	}>;
 }) {
-  const searchParams = await props.searchParams;
-  const query = searchParams?.query || '';
-  const currentPage = Number(searchParams?.page) || 1;
-  const totalPages = await fetchInvoicesPages(query);
-  return (
-    <div className="w-full">
-      <div className="flex w-full items-center justify-between">
-        <h1 className={`${lusitana.className} text-2xl`}>Invoices</h1>
-      </div>
-      <div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
-        <Suspense fallback={<SearchSkeleton />}>
-          <Search placeholder="Search invoices..." />
-          <CreateInvoice />
-        </Suspense>
-      </div>
-      <InvoicesTableSection totalPages={totalPages}>
-        <Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
-          <Table query={query} currentPage={currentPage} />
-        </Suspense>
-      </InvoicesTableSection>
-    </div>
-  );
+	const searchParams = await props.searchParams;
+	const query = searchParams?.query || '';
+	const currentPage = Number(searchParams?.page) || 1;
+	const totalPages = await fetchInvoicesPages(query);
+	return (
+		<div className="w-full">
+			<div className="flex w-full items-center justify-between">
+				<h1 className={`${lusitana.className} text-2xl`}>Invoices</h1>
+			</div>
+			<div className="mt-4 flex items-center justify-between gap-2 md:mt-8">
+				<Suspense fallback={<SearchSkeleton />}>
+					<Search placeholder="Search invoices..." />
+					<CreateInvoice />
+				</Suspense>
+			</div>
+			<Suspense key={query + currentPage} fallback={<InvoicesTableSkeleton />}>
+				<Table query={query} currentPage={currentPage} />
+			</Suspense>
+			<div className="mt-5 flex w-full justify-center">
+				<Suspense fallback={<div className="h-10 w-10 rounded-md bg-gray-100" />}>
+					<Pagination totalPages={totalPages} />
+				</Suspense>
+			</div>
+		</div>
+	);
 }
