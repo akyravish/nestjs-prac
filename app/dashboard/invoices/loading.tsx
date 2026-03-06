@@ -12,7 +12,11 @@ export default function Loading(): ReactElement {
         <div className="h-10 w-32 rounded-md bg-gray-100" />
       </div>
       <InvoicesTableSkeleton />
+      <div className="mt-5 flex w-full justify-center">
+        <div className="h-10 w-10 rounded-md bg-gray-100" />
+        <div className="h-10 w-40 rounded-md bg-gray-100 mx-4" />
+        <div className="h-10 w-10 rounded-md bg-gray-100" />
+      </div>
     </div>
   );
 }
-
